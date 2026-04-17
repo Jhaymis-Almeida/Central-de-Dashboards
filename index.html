@@ -153,18 +153,18 @@ body {
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .icon-menu {
-  width: 22px;
-  height: 22px;
-  fill: rgba(46, 223, 251);
-  transition: 0.2s;
+  width: 20px;
+  height: 20px;
+  fill: #2edffb;
+  display: block;
 }
 
-.menu-item:hover .icon-menu {
-  fill: #cfe3ff;
+.menu-item svg {
+  display: block;
 }
 
 </style>
@@ -196,8 +196,8 @@ body {
   <!-- AMA -->
   <div class="menu-item" onclick="filtrarArea('AMA', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-      <path d="M230.33,141.06a24.34,24.34,0,0,0-18.61-4.77C230.5,117.33,240,98.48,240,80c0-26.47-21.29-48-47.46-48A47.58,47.58,0,0,0,156,48.75,47.58,47.58,0,0,0,119.46,32C93.29,32,72,53.53,72,80c0,11,3.24,21.69,10.06,33a31.87,31.87,0,0,0-14.75,8.4L44.69,144H16A16,16,0,0,0,0,160v40a16,16,0,0,0,16,16H120a7.93,7.93,0,0,0,1.94-.24l64-16a6.94,6.94,0,0,0,1.19-.4L226,182.82l.44-.2a24.6,24.6,0,0,0,3.93-41.56Z"/>
-    </svg>
+  <path d="M128 32L16 96l112 64 96-54v58h16V96L128 32zm0 144L48 112v48c0 26 36 48 80 48s80-22 80-48v-48l-80 64z"/>
+</svg>
     AMA
   </div>
 
@@ -220,16 +220,16 @@ body {
   <!-- FATURAMENTO -->
   <div class="menu-item" onclick="filtrarArea('FATURAMENTO', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-      <path d="M128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152ZM240,56H16a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8H240a8,8,0,0,0,8-8V64A8,8,0,0,0,240,56Z"/>
-    </svg>
+  <path d="M136 24h-16v16a40 40 0 0 0-32 39c0 22 18 32 36 36 19 4 28 10 28 24a24 24 0 0 1-48 0H88a40 40 0 0 0 32 39v16h16v-16a40 40 0 0 0 32-39c0-22-18-32-36-36-19-4-28-10-28-24a24 24 0 0 1 48 0h16a40 40 0 0 0-32-39z"/>
+</svg>
     Faturamento
   </div>
 
   <!-- CREDENCIAMENTO -->
   <div class="menu-item" onclick="filtrarArea('CREDENCIAMENTO', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-      <path d="M200,112a8,8,0,0,1-8,8H152a8,8,0,0,1,0-16h40A8,8,0,0,1,200,112Zm-8,24H152a8,8,0,0,0,0,16h40a8,8,0,0,0,0-16Zm40-80V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Z"/>
-    </svg>
+  <path d="M128 128a40 40 0 1 0-40-40 40 40 0 0 0 40 40zm0 16c-44.18 0-80 26.86-80 60v4a8 8 0 0 0 8 8h144a8 8 0 0 0 8-8v-4c0-33.14-35.82-60-80-60z"/>
+</svg>
     Credenciamento
   </div>
 
