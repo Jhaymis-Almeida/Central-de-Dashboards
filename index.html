@@ -167,6 +167,26 @@ body {
   display: block;
 }
 
+
+/* BOTÃO VOLTAR */
+.btn-voltar {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px #0000002a;
+  transition: all 0.2s ease;
+  margin-bottom: 15px;
+}
+
+/* hover igual feeling do input */
+.btn-voltar:hover {
+  background-color: #e8f0fb;
+  transform: translateY(-1px);
+}
+
 </style>
 </head>
 
@@ -236,6 +256,7 @@ body {
 </div>
 
 
+
 <!-- MAIN -->
 <div class="main">
 
@@ -243,94 +264,114 @@ body {
     <h1>Central de Dashboards</h1>
   </div>
 
-  <div class="container">
+  <!-- BOTÃO VOLTAR -->
+  <div id="voltarBox" style="display:none; padding:10px;">
+    <button class="btn-voltar" onclick="voltar()"> ⬅️Voltar</button>
+    </button>
+  </div>
 
-    <div class="busca">
-      <input type="text" id="searchInput" placeholder="🔍 Buscar dashboard...">
-    </div>
+  <!-- LOADING -->
+  <div id="loading" style="display:none; text-align:center; padding:20px;">
+    <h3>Carregando dashboard...</h3>
+  </div>
 
-    <div id="grid" class="grid">
+  <!-- IFRAME -->
+  <div id="viewer" style="flex:1; display:none;">
+    <iframe id="frame" width="100%" height="100%" style="border:0;"></iframe>
+  </div>
+
+  <!-- CONTEÚDO NORMAL -->
+  <div id="conteudo">
+
+    <div class="container">
+
+      <div class="busca">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar dashboard...">
+      </div>
+
+      <div id="grid" class="grid">
 
       <!-- SST -->
-      <a class="card" data-id="doc_sst" data-area="SST" href="https://lookerstudio.google.com/embed/reporting/54b6aade-a8ee-47b0-9362-c31bf3e7f72e/page/x2jFF" target="_blank">
-        <div class="icon">📄</div>
-        <div class="titulo">Documentos e levantamentos - SST</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54b6aade-a8ee-47b0-9362-c31bf3e7f72e/page/p_d7hm0b9e0d')">
+  <div class="icon">👷🏼</div>
+  <div class="titulo">Documentos e levantamentos - SST</div>
+</div>
 
-      <a class="card" data-id="exames_sst" data-area="SST" href="https://lookerstudio.google.com/embed/reporting/0d9fc538-f948-4f64-8f0f-47b8953eee94/page/p_82fpj9zwvd" target="_blank">
-        <div class="icon">🧪</div>
-        <div class="titulo">Exames periódicos - SST</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/6233625a-b3f8-44d2-be3c-3bcaaeaaf2a0/page/p_0ka7qvwe0d')">
+  <div class="icon">🦺</div>
+  <div class="titulo">Chamados - SST</div>
+</div>
 
-      <a class="card" data-id="chamados_sst" data-area="SST" href="https://lookerstudio.google.com/embed/reporting/6233625a-b3f8-44d2-be3c-3bcaaeaaf2a0/page/SMRiF" target="_blank">
-        <div class="icon">📊</div>
-        <div class="titulo">Chamados - SST</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/0d9fc538-f948-4f64-8f0f-47b8953eee94/page/p_4humximi1d')">
+  <div class="icon">🩺</div>
+  <div class="titulo">Exames periódicos - SST</div>
+</div>
 
-      <a class="card" data-id="enfermagem" data-area="SST" href="https://lookerstudio.google.com/embed/reporting/427c6716-8dc5-466d-857c-fbed22d1d210/page/l4BiF" target="_blank">
-        <div class="icon">🩺</div>
-        <div class="titulo">Chamados Enfermagem - SST</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/427c6716-8dc5-466d-857c-fbed22d1d210/page/p_wdgv8hbg0d')">
+  <div class="icon">👨🏼‍⚕️</div>
+  <div class="titulo">Chamados Enfermagem - SST</div>
+</div>
 
-      <!-- AMA -->
-      <a class="card" data-id="ama" data-area="AMA" href="https://lookerstudio.google.com/embed/reporting/54fff6d6-6909-46bf-9627-2255b7b29959/page/H34QF" target="_blank">
-        <div class="icon">📊</div>
-        <div class="titulo">Chamados - AMA</div>
-        <div class="acessos"></div>
-      </a>
+<!-- AMA -->
+<div class="card" data-area="AMA" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54fff6d6-6909-46bf-9627-2255b7b29959/page/p_k20rkhxe0d')">
+  <div class="icon">🎓</div>
+  <div class="titulo">Chamados - AMA</div>
+</div>
 
-      <!-- GPS -->
-      <a class="card" data-id="gps" data-area="GPS" href="https://lookerstudio.google.com/embed/reporting/b1e94d93-8086-4229-9b6a-3da71fc009e2/page/NnrQF" target="_blank">
-        <div class="icon">📊</div>
-        <div class="titulo">Chamados - GPS</div>
-        <div class="acessos"></div>
-      </a>
+<!-- GPS -->
+<div class="card" data-area="GPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/b1e94d93-8086-4229-9b6a-3da71fc009e2/page/p_gkrxfw8e0d')">
+  <div class="icon">💚</div>
+  <div class="titulo">Chamados - GPS</div>
+</div>
 
-      <!-- SPS -->
-      <a class="card" data-id="suporte" data-area="SPS" href="https://lookerstudio.google.com/embed/reporting/ecbc30eb-26cd-4acc-b36a-b89f7499400c/page/YwlkE" target="_blank">
-        <div class="icon">🛠️</div>
-        <div class="titulo">Chamados Suporte - SPS</div>
-        <div class="acessos"></div>
-      </a>
+<!-- SPS -->
+<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ecbc30eb-26cd-4acc-b36a-b89f7499400c/page/p_h8zqz7jpzd')">
+  <div class="icon">🛠️</div>
+  <div class="titulo">Chamados Suporte - SPS</div>
+</div>
 
-      <a class="card" data-id="vidas" data-area="SPS" href="https://lookerstudio.google.com/embed/reporting/ba413d80-678b-483c-848b-1bdfc2a69139/page/p5xTF" target="_blank">
-        <div class="icon">👥</div>
-        <div class="titulo">Vidas ativas - SPS</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ba413d80-678b-483c-848b-1bdfc2a69139/page/p5xTF')">
+  <div class="icon">👥</div>
+  <div class="titulo">Vidas ativas - SPS</div>
+</div>
 
-      <!-- FATURAMENTO -->
-      <a class="card" data-id="fat_sst" data-area="FATURAMENTO" href="https://lookerstudio.google.com/embed/reporting/bcc27c4f-5cc5-41c0-951b-c727c89800ed/page/p_ok6bxt1apd" target="_blank">
-        <div class="icon">💰</div>
-        <div class="titulo">Faturas - SST</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/16ce81a3-828c-4f9e-b14f-d0f2fb562e51/page/K4LwE')">
+  <div class="icon">🖥️</div>
+  <div class="titulo">Controle de treinamentos - SPS</div>
+</div>
 
-      <a class="card" data-id="fat_ama" data-area="FATURAMENTO" href="https://lookerstudio.google.com/embed/reporting/546e56f3-6b81-4aff-bfa7-3436f6950acf/page/p_so2s12e2sd" target="_blank">
-        <div class="icon">💰</div>
-        <div class="titulo">Faturas - AMA</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/22a2de90-c958-425d-b8ee-84d0b7299e27/page/p_3yxsr3752d')">
+  <div class="icon">🛫</div>
+  <div class="titulo">Controle de viagens - SPS</div>
+</div>
 
-      <!-- CREDENCIAMENTO -->
-      <a class="card" data-id="cred_sst" data-area="CREDENCIAMENTO" href="https://lookerstudio.google.com/embed/reporting/540abbaf-864a-41ab-962e-e8467b413258/page/RSHOF" target="_blank">
-        <div class="icon">🧾</div>
-        <div class="titulo">Credenciamento - SST</div>
-        <div class="acessos"></div>
-      </a>
+<!-- FATURAMENTO -->
+<div class="card" data-area="FATURAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/bcc27c4f-5cc5-41c0-951b-c727c89800ed/page/p_im4pa62s2d')">
+  <div class="icon">💵</div>
+  <div class="titulo">Faturas - SST</div>
+</div>
 
-      <a class="card" data-id="cred_ama" data-area="CREDENCIAMENTO" href="https://lookerstudio.google.com/embed/reporting/dba498d0-dff7-41e3-af73-ebe26ebdf033/page/m4fJF" target="_blank">
-        <div class="icon">🧾</div>
-        <div class="titulo">Credenciamento - AMA</div>
-        <div class="acessos"></div>
-      </a>
+<div class="card" data-area="FATURAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/546e56f3-6b81-4aff-bfa7-3436f6950acf/page/p_ohu4951r2d')">
+  <div class="icon">💶</div>
+  <div class="titulo">Faturas - AMA</div>
+</div>
 
+<!-- CREDENCIAMENTO -->
+<div class="card" data-area="CREDENCIAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/540abbaf-864a-41ab-962e-e8467b413258/page/RSHOF')">
+  <div class="icon">🗃️</div>
+  <div class="titulo">Credenciamento - SST</div>
+</div>
+
+<div class="card" data-area="CREDENCIAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/dba498d0-dff7-41e3-af73-ebe26ebdf033/page/p_9g0779wo0d')">
+  <div class="icon">🗃️</div>
+  <div class="titulo">Credenciamento - AMA</div>
+</div>
+
+      </div>
     </div>
-  </div>
+
+  </div> <!-- fecha conteudo -->
+
 </div>
 
 <script>
@@ -361,6 +402,29 @@ function aplicarFiltros() {
 
     card.style.display = (matchBusca && matchArea) ? 'block' : 'none';
   });
+}
+
+// 🔥 ABRIR DASH
+function abrirDashboard(url) {
+  document.getElementById("conteudo").style.display = "none";
+  document.getElementById("viewer").style.display = "block";
+  document.getElementById("voltarBox").style.display = "block";
+  document.getElementById("loading").style.display = "block";
+
+  const frame = document.getElementById("frame");
+  frame.src = url;
+
+  frame.onload = () => {
+    document.getElementById("loading").style.display = "none";
+  };
+}
+
+// 🔥 VOLTAR
+function voltar() {
+  document.getElementById("frame").src = "";
+  document.getElementById("viewer").style.display = "none";
+  document.getElementById("voltarBox").style.display = "none";
+  document.getElementById("conteudo").style.display = "block";
 }
 
 </script>
