@@ -4,12 +4,7 @@
 <meta charset="UTF-8">
 <title>Central de Dashboards</title>
 
-<head>
-<meta charset="UTF-8">
-<title>Central de Dashboards</title>
-
 <link rel="icon" href="icone favicon branco.ico" type="image/x-icon">
-
 
 <style>
 * {
@@ -21,7 +16,7 @@ body {
   font-family: "Segoe UI", Arial;
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* mantém sidebar fixa */
   background-color: #e8f0fb;
 }
 
@@ -62,6 +57,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0; /* essencial para a rolagem funcionar dentro do flex */
+  overflow: hidden;
 }
 
 
@@ -82,7 +79,10 @@ body {
 /* CONTEÚDO */
 .container {
   padding: 20px;
+  padding-bottom: 20px;
   overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 
@@ -107,15 +107,27 @@ body {
 }
 
 
+/* CARD WRAPPER — necessário para o dropdown ficar ancorado */
+.card-wrapper {
+  position: relative;
+}
+
+
 /* CARD */
 .card {
   background: white;
-  padding: 50px;
+  padding: 30px 28px;
   border-radius: 20px;
   text-decoration: none;
   color: #333;
   box-shadow: 0 4px 8px #0000004b;
-  transition: 0.s;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  width: 100%;
+  min-height: 130px;         /* altura mínima uniforme para todos os cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card:hover {
@@ -128,8 +140,14 @@ body {
   color: white;
 }
 
-  .card {
-  transition: all 0.35s ease;
+/* Card ativo (dropdown aberto) — mantém o estilo escuro */
+.card.ativo {
+  background-color: #163160f1;
+  transform: translateY(-6px) scale(1.02);
+}
+
+.card.ativo * {
+  color: white;
 }
 
 .icon {
@@ -149,7 +167,7 @@ body {
 }
 
 
-/*Menu Sidebar*/
+/* Menu Sidebar */
 .menu-item {
   display: flex;
   align-items: center;
@@ -181,10 +199,62 @@ body {
   margin-bottom: 15px;
 }
 
-/* hover igual feeling do input */
 .btn-voltar:hover {
   background-color: #e8f0fb;
   transform: translateY(-1px);
+}
+
+
+/* 🔥 DROPDOWN DO CARD */
+.card-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% - 10px); /* cola logo abaixo do card */
+  left: 0;
+  width: 100%;
+  background: #1e4a8a;     /* azul escuro um tom mais claro que o hover do card (#163160) */
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  z-index: 100;
+  overflow: hidden;
+  animation: slideDown 0.22s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-dropdown.aberto {
+  display: block;
+}
+
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;              /* texto branco sobre fundo azul */
+  cursor: pointer;
+  transition: background 0.18s;
+  text-align: left;
+}
+
+.dropdown-btn:hover {
+  background-color: rgba(255,255,255,0.15); /* hover sutil mais claro */
+}
+
+.dropdown-btn:not(:last-child) {
+  border-bottom: 1px solid rgba(255,255,255,0.15); /* divisor suave */
+}
+
+.dropdown-btn .btn-icon {
+  font-size: 20px;
 }
 
 </style>
@@ -216,8 +286,8 @@ body {
   <!-- AMA -->
   <div class="menu-item" onclick="filtrarArea('AMA', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-  <path d="M128 32L16 96l112 64 96-54v58h16V96L128 32zm0 144L48 112v48c0 26 36 48 80 48s80-22 80-48v-48l-80 64z"/>
-</svg>
+      <path d="M128 32L16 96l112 64 96-54v58h16V96L128 32zm0 144L48 112v48c0 26 36 48 80 48s80-22 80-48v-48l-80 64z"/>
+    </svg>
     AMA
   </div>
 
@@ -240,16 +310,16 @@ body {
   <!-- FATURAMENTO -->
   <div class="menu-item" onclick="filtrarArea('FATURAMENTO', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-  <path d="M136 24h-16v16a40 40 0 0 0-32 39c0 22 18 32 36 36 19 4 28 10 28 24a24 24 0 0 1-48 0H88a40 40 0 0 0 32 39v16h16v-16a40 40 0 0 0 32-39c0-22-18-32-36-36-19-4-28-10-28-24a24 24 0 0 1 48 0h16a40 40 0 0 0-32-39z"/>
-</svg>
+      <path d="M136 24h-16v16a40 40 0 0 0-32 39c0 22 18 32 36 36 19 4 28 10 28 24a24 24 0 0 1-48 0H88a40 40 0 0 0 32 39v16h16v-16a40 40 0 0 0 32-39c0-22-18-32-36-36-19-4-28-10-28-24a24 24 0 0 1 48 0h16a40 40 0 0 0-32-39z"/>
+    </svg>
     Faturamento
   </div>
 
   <!-- CREDENCIAMENTO -->
   <div class="menu-item" onclick="filtrarArea('CREDENCIAMENTO', this)">
     <svg class="icon-menu" viewBox="0 0 256 256">
-  <path d="M128 128a40 40 0 1 0-40-40 40 40 0 0 0 40 40zm0 16c-44.18 0-80 26.86-80 60v4a8 8 0 0 0 8 8h144a8 8 0 0 0 8-8v-4c0-33.14-35.82-60-80-60z"/>
-</svg>
+      <path d="M128 128a40 40 0 1 0-40-40 40 40 0 0 0 40 40zm0 16c-44.18 0-80 26.86-80 60v4a8 8 0 0 0 8 8h144a8 8 0 0 0 8-8v-4c0-33.14-35.82-60-80-60z"/>
+    </svg>
     Credenciamento
   </div>
 
@@ -266,8 +336,7 @@ body {
 
   <!-- BOTÃO VOLTAR -->
   <div id="voltarBox" style="display:none; padding:10px;">
-    <button class="btn-voltar" onclick="voltar()"> ⬅️Voltar</button>
-    </button>
+    <button class="btn-voltar" onclick="voltar()">⬅️ Voltar</button>
   </div>
 
   <!-- LOADING -->
@@ -281,7 +350,7 @@ body {
   </div>
 
   <!-- CONTEÚDO NORMAL -->
-  <div id="conteudo">
+  <div id="conteudo" style="flex:1; display:flex; flex-direction:column; min-height:0; overflow:hidden;">
 
     <div class="container">
 
@@ -291,81 +360,221 @@ body {
 
       <div id="grid" class="grid">
 
-      <!-- SST -->
-<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54b6aade-a8ee-47b0-9362-c31bf3e7f72e/page/p_d7hm0b9e0d')">
-  <div class="icon">👷🏼</div>
-  <div class="titulo">Documentos e levantamentos - SST</div>
-</div>
+        <!-- SST -->
+        <div class="card-wrapper">
+          <div class="card" data-area="SST" onclick="toggleDropdown('drop-sst-docs', this)">
+            <div class="icon">👷🏼</div>
+            <div class="titulo">Documentos e levantamentos - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-sst-docs">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54b6aade-a8ee-47b0-9362-c31bf3e7f72e/page/p_d7hm0b9e0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1FpCypdMImInzbCDRUpK1mmgD3jyeg8-1FrJtu9l84wM/edit?gid=679317816#gid=679317816','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/6233625a-b3f8-44d2-be3c-3bcaaeaaf2a0/page/p_0ka7qvwe0d')">
-  <div class="icon">🦺</div>
-  <div class="titulo">Chamados - SST</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SST" onclick="toggleDropdown('drop-sst-chamados', this)">
+            <div class="icon">🦺</div>
+            <div class="titulo">Chamados - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-sst-chamados">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/6233625a-b3f8-44d2-be3c-3bcaaeaaf2a0/page/p_0ka7qvwe0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1FpCypdMImInzbCDRUpK1mmgD3jyeg8-1FrJtu9l84wM/edit?gid=2143429572#gid=2143429572','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/0d9fc538-f948-4f64-8f0f-47b8953eee94/page/p_4humximi1d')">
-  <div class="icon">🩺</div>
-  <div class="titulo">Exames periódicos - SST</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SST" onclick="toggleDropdown('drop-sst-exames', this)">
+            <div class="icon">🩺</div>
+            <div class="titulo">Exames periódicos - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-sst-exames">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/0d9fc538-f948-4f64-8f0f-47b8953eee94/page/p_4humximi1d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1nef8sCO6qGnp_i-Ynw2F2eLIsg8c5H1mQVt5GFsYKPU/edit?gid=815218196#gid=815218196','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SST" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/427c6716-8dc5-466d-857c-fbed22d1d210/page/p_wdgv8hbg0d')">
-  <div class="icon">👨🏼‍⚕️</div>
-  <div class="titulo">Chamados Enfermagem - SST</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SST" onclick="toggleDropdown('drop-sst-enfermagem', this)">
+            <div class="icon">👨🏼‍⚕️</div>
+            <div class="titulo">Chamados Enfermagem - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-sst-enfermagem">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/427c6716-8dc5-466d-857c-fbed22d1d210/page/p_wdgv8hbg0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1nef8sCO6qGnp_i-Ynw2F2eLIsg8c5H1mQVt5GFsYKPU/edit?gid=1617281520#gid=1617281520','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<!-- AMA -->
-<div class="card" data-area="AMA" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54fff6d6-6909-46bf-9627-2255b7b29959/page/p_k20rkhxe0d')">
-  <div class="icon">🎓</div>
-  <div class="titulo">Chamados - AMA</div>
-</div>
+        <!-- AMA -->
+        <div class="card-wrapper">
+          <div class="card" data-area="AMA" onclick="toggleDropdown('drop-ama-chamados', this)">
+            <div class="icon">🎓</div>
+            <div class="titulo">Chamados - AMA</div>
+          </div>
+          <div class="card-dropdown" id="drop-ama-chamados">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/54fff6d6-6909-46bf-9627-2255b7b29959/page/p_k20rkhxe0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1LVrLCuT-oLM6l0GcoPGnnN15sFXI_88PlW7Z8cHczJ8/edit?gid=1535251073#gid=1535251073','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<!-- GPS -->
-<div class="card" data-area="GPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/b1e94d93-8086-4229-9b6a-3da71fc009e2/page/p_gkrxfw8e0d')">
-  <div class="icon">💚</div>
-  <div class="titulo">Chamados - GPS</div>
-</div>
+        <!-- GPS -->
+        <div class="card-wrapper">
+          <div class="card" data-area="GPS" onclick="toggleDropdown('drop-gps-chamados', this)">
+            <div class="icon">💚</div>
+            <div class="titulo">Chamados - GPS</div>
+          </div>
+          <div class="card-dropdown" id="drop-gps-chamados">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/b1e94d93-8086-4229-9b6a-3da71fc009e2/page/p_gkrxfw8e0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1n2T8IrxoqwZtNCg1IxgaJlN7-yP8g1loBoYU4qxxUVw/edit?gid=1505066075#gid=1505066075','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<!-- SPS -->
-<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ecbc30eb-26cd-4acc-b36a-b89f7499400c/page/p_h8zqz7jpzd')">
-  <div class="icon">🛠️</div>
-  <div class="titulo">Chamados Suporte - SPS</div>
-</div>
+        <!-- SPS -->
+        <div class="card-wrapper">
+          <div class="card" data-area="SPS" onclick="toggleDropdown('drop-sps-suporte', this)">
+            <div class="icon">🛠️</div>
+            <div class="titulo">Chamados Suporte - SPS</div>
+          </div>
+          <div class="card-dropdown" id="drop-sps-suporte">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ecbc30eb-26cd-4acc-b36a-b89f7499400c/page/p_h8zqz7jpzd')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1UWzV-ZaZIFdth-z74cQ6MyOPcf_Z4FiSwY30BKqYrGw/edit?gid=1436817510#gid=1436817510','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ba413d80-678b-483c-848b-1bdfc2a69139/page/p5xTF')">
-  <div class="icon">👥</div>
-  <div class="titulo">Vidas ativas - SPS</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SPS" onclick="toggleDropdown('drop-sps-vidas', this)">
+            <div class="icon">👥</div>
+            <div class="titulo">Vidas ativas - SPS</div>
+          </div>
+          <div class="card-dropdown" id="drop-sps-vidas">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/ba413d80-678b-483c-848b-1bdfc2a69139/page/p5xTF')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1h38fXsQhTJJ3BKwuDqASzhCIFImNUd9lBUYvt3Mtg8c/edit?gid=822284216#gid=822284216','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/16ce81a3-828c-4f9e-b14f-d0f2fb562e51/page/K4LwE')">
-  <div class="icon">🖥️</div>
-  <div class="titulo">Controle de treinamentos - SPS</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SPS" onclick="toggleDropdown('drop-sps-treinamentos', this)">
+            <div class="icon">🖥️</div>
+            <div class="titulo">Controle de treinamentos - SPS</div>
+          </div>
+          <div class="card-dropdown" id="drop-sps-treinamentos">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/16ce81a3-828c-4f9e-b14f-d0f2fb562e51/page/K4LwE')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1sVwqzB2SwTuVw4XHw1SKKNrMHug60NEZlZpdwm2Wk6o/edit?gid=591468710#gid=591468710','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="SPS" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/22a2de90-c958-425d-b8ee-84d0b7299e27/page/p_3yxsr3752d')">
-  <div class="icon">🛫</div>
-  <div class="titulo">Controle de viagens - SPS</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="SPS" onclick="toggleDropdown('drop-sps-viagens', this)">
+            <div class="icon">🛫</div>
+            <div class="titulo">Controle de viagens - SPS</div>
+          </div>
+          <div class="card-dropdown" id="drop-sps-viagens">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/22a2de90-c958-425d-b8ee-84d0b7299e27/page/p_3yxsr3752d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1xeMdgnLuhWKJB7P_fqaeTCX76FY2_fYREfEm4cQ3-DM/edit?gid=1924332069#gid=1924332069','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<!-- FATURAMENTO -->
-<div class="card" data-area="FATURAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/bcc27c4f-5cc5-41c0-951b-c727c89800ed/page/p_im4pa62s2d')">
-  <div class="icon">💵</div>
-  <div class="titulo">Faturas - SST</div>
-</div>
+        <!-- FATURAMENTO -->
+        <div class="card-wrapper">
+          <div class="card" data-area="FATURAMENTO" onclick="toggleDropdown('drop-fat-sst', this)">
+            <div class="icon">💵</div>
+            <div class="titulo">Faturas - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-fat-sst">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/bcc27c4f-5cc5-41c0-951b-c727c89800ed/page/p_im4pa62s2d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1cpFHtZL4YycKQJs-mcsZZ8oFBu5rcauda9scR5hMrbk/edit?gid=701965059#gid=701965059','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="FATURAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/546e56f3-6b81-4aff-bfa7-3436f6950acf/page/p_ohu4951r2d')">
-  <div class="icon">💶</div>
-  <div class="titulo">Faturas - AMA</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="FATURAMENTO" onclick="toggleDropdown('drop-fat-ama', this)">
+            <div class="icon">💶</div>
+            <div class="titulo">Faturas - AMA</div>
+          </div>
+          <div class="card-dropdown" id="drop-fat-ama">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/546e56f3-6b81-4aff-bfa7-3436f6950acf/page/p_ohu4951r2d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1LVrLCuT-oLM6l0GcoPGnnN15sFXI_88PlW7Z8cHczJ8/edit?gid=2021906752#gid=2021906752','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<!-- CREDENCIAMENTO -->
-<div class="card" data-area="CREDENCIAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/540abbaf-864a-41ab-962e-e8467b413258/page/RSHOF')">
-  <div class="icon">🗃️</div>
-  <div class="titulo">Credenciamento - SST</div>
-</div>
+        <!-- CREDENCIAMENTO -->
+        <div class="card-wrapper">
+          <div class="card" data-area="CREDENCIAMENTO" onclick="toggleDropdown('drop-cred-sst', this)">
+            <div class="icon">🗃️</div>
+            <div class="titulo">Credenciamento - SST</div>
+          </div>
+          <div class="card-dropdown" id="drop-cred-sst">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/540abbaf-864a-41ab-962e-e8467b413258/page/RSHOF')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/19RFzEfJ3OgjYoKHBzONLHx3vqlYwtGTjz5M6U3P_XUc/edit?gid=213249110#gid=213249110','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
-<div class="card" data-area="CREDENCIAMENTO" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/dba498d0-dff7-41e3-af73-ebe26ebdf033/page/p_9g0779wo0d')">
-  <div class="icon">🗃️</div>
-  <div class="titulo">Credenciamento - AMA</div>
-</div>
+        <div class="card-wrapper">
+          <div class="card" data-area="CREDENCIAMENTO" onclick="toggleDropdown('drop-cred-ama', this)">
+            <div class="icon">🗃️</div>
+            <div class="titulo">Credenciamento - AMA</div>
+          </div>
+          <div class="card-dropdown" id="drop-cred-ama">
+            <button class="dropdown-btn" onclick="abrirDashboard('https://datastudio.google.com/embed/reporting/dba498d0-dff7-41e3-af73-ebe26ebdf033/page/p_9g0779wo0d')">
+              <span class="btn-icon">📊</span> Dashboard
+            </button>
+            <button class="dropdown-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1--nL7eQ51NxvMbAKP58oCVSL-_0uWh_AsEUCtzgREno/edit?gid=2087367836#gid=2087367836','_blank')">
+              <span class="btn-icon">🎲</span> Base de Dados
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -377,6 +586,8 @@ body {
 <script>
 
 let areaAtual = 'all';
+let cardAtivo = null;
+let dropAtivo = null;
 
 function filtrarArea(area, elemento) {
   areaAtual = area;
@@ -384,6 +595,7 @@ function filtrarArea(area, elemento) {
   document.querySelectorAll('.menu-item').forEach(e => e.classList.remove('active'));
   elemento.classList.add('active');
 
+  fecharDropdownAtivo();
   aplicarFiltros();
 }
 
@@ -391,21 +603,57 @@ document.getElementById('searchInput').addEventListener('keyup', aplicarFiltros)
 
 function aplicarFiltros() {
   const busca = document.getElementById('searchInput').value.toLowerCase();
-  const cards = document.querySelectorAll('.card');
+  const wrappers = document.querySelectorAll('.card-wrapper');
 
-  cards.forEach(card => {
+  wrappers.forEach(wrapper => {
+    const card = wrapper.querySelector('.card');
     const texto = card.textContent.toLowerCase();
     const area = card.getAttribute('data-area');
 
     const matchBusca = texto.includes(busca);
     const matchArea = (areaAtual === 'all' || area === areaAtual);
 
-    card.style.display = (matchBusca && matchArea) ? 'block' : 'none';
+    wrapper.style.display = (matchBusca && matchArea) ? 'block' : 'none';
   });
 }
 
+// 🔥 TOGGLE DROPDOWN — abre embaixo do card clicado
+function toggleDropdown(dropId, cardEl) {
+  const drop = document.getElementById(dropId);
+  const jáAberto = drop.classList.contains('aberto');
+
+  // fecha qualquer dropdown aberto
+  fecharDropdownAtivo();
+
+  if (!jáAberto) {
+    drop.classList.add('aberto');
+    cardEl.classList.add('ativo');
+    dropAtivo = drop;
+    cardAtivo = cardEl;
+  }
+}
+
+function fecharDropdownAtivo() {
+  if (dropAtivo) {
+    dropAtivo.classList.remove('aberto');
+    dropAtivo = null;
+  }
+  if (cardAtivo) {
+    cardAtivo.classList.remove('ativo');
+    cardAtivo = null;
+  }
+}
+
+// Clique fora fecha o dropdown
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.card-wrapper')) {
+    fecharDropdownAtivo();
+  }
+});
+
 // 🔥 ABRIR DASH
 function abrirDashboard(url) {
+  fecharDropdownAtivo();
   document.getElementById("conteudo").style.display = "none";
   document.getElementById("viewer").style.display = "block";
   document.getElementById("voltarBox").style.display = "block";
